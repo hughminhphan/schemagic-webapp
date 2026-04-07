@@ -5,7 +5,7 @@ import { WizardProvider, useWizard } from "@/components/app/WizardProvider";
 import PartInput from "@/components/app/PartInput";
 import StatusStream from "@/components/app/StatusStream";
 import PackageSelect from "@/components/app/PackageSelect";
-import PinReviewTable from "@/components/app/PinReviewTable";
+import PinReviewVisual from "@/components/app/PinReviewVisual";
 import DownloadPanel from "@/components/app/DownloadPanel";
 
 function WizardRouter() {
@@ -18,7 +18,7 @@ function WizardRouter() {
           sche<span className="text-accent">MAGIC</span>
         </h1>
         <p className="mt-[12px] text-sm text-text-secondary">
-          Enter a part number to generate KiCad symbols and footprints.
+          Upload a datasheet to generate KiCad symbols and footprints.
         </p>
       </div>
 
@@ -28,7 +28,7 @@ function WizardRouter() {
       {state.step === "PACKAGE_SELECT" && <PackageSelect />}
 
       {(state.step === "PIN_REVIEW" || state.step === "GENERATING") && (
-        <PinReviewTable />
+        <PinReviewVisual />
       )}
 
       {state.step === "GENERATING" && (

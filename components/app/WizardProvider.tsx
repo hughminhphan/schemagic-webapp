@@ -57,6 +57,11 @@ export interface FileInfo {
   size_bytes: number;
 }
 
+export interface ModelInfo {
+  ref: string;
+  inferred: boolean;
+}
+
 export interface WizardState {
   step: Step;
   jobId: string;
@@ -66,8 +71,10 @@ export interface WizardState {
   match: MatchResult | null;
   pins: PinInfo[];
   files: FileInfo[];
+  model: ModelInfo | null;
   error: string;
   logs: string[];
+  selectedPinNumber: string | null;
 }
 
 export type WizardAction =
@@ -81,8 +88,9 @@ export type WizardAction =
       pins: PinInfo[];
     }
   | { type: "UPDATE_PIN"; index: number; field: string; value: string }
+  | { type: "SELECT_PIN"; pinNumber: string | null }
   | { type: "START_GENERATE" }
-  | { type: "GENERATED"; files: FileInfo[] }
+  | { type: "GENERATED"; files: FileInfo[]; model: ModelInfo | null }
   | { type: "ERROR"; message: string }
   | { type: "RESET" };
 
@@ -95,8 +103,10 @@ const initialState: WizardState = {
   match: null,
   pins: [],
   files: [],
+  model: null,
   error: "",
   logs: [],
+  selectedPinNumber: null,
 };
 
 function reducer(state: WizardState, action: WizardAction): WizardState {
@@ -125,10 +135,12 @@ function reducer(state: WizardState, action: WizardAction): WizardState {
       pins[action.index] = { ...pins[action.index], [action.field]: action.value };
       return { ...state, pins };
     }
+    case "SELECT_PIN":
+      return { ...state, selectedPinNumber: action.pinNumber };
     case "START_GENERATE":
       return { ...state, step: "GENERATING" };
     case "GENERATED":
-      return { ...state, step: "DONE", files: action.files };
+      return { ...state, step: "DONE", files: action.files, model: action.model };
     case "ERROR":
       return { ...state, step: "ERROR", error: action.message };
     case "RESET":
