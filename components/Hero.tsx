@@ -14,7 +14,8 @@ export default function Hero() {
         </p>
         <div className="mt-[48px]">
           <a
-            href="#download"
+            href="/scheMAGIC.dmg"
+            download
             className="inline-flex items-center justify-center bg-accent h-[48px] w-[240px] text-sm font-medium text-white hover:bg-accent-hover transition-colors"
           >
             Download for KiCad 8
